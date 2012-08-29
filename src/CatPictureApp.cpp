@@ -26,6 +26,7 @@ private:
 	static const int textureSize = 1024;
 
 	void createRectangle(uint8_t* pixels, int x1, int y1, int x2, int y2);
+	void createLine(uint8_t* pixels, int x, int y);
 };
 
 void CatPictureApp::settings(Settings* mySettings) {
@@ -48,14 +49,22 @@ void CatPictureApp::createRectangle(uint8_t* pixels, int x1, int y1, int x2, int
 	if (endx >= appWidth) endx = appWidth-1;
 	if (endy >= appHeight) endy = appHeight-1;
 	
-		for ( int y=50; y <= endy; y++){			
-			for ( int x = 0; x <= endx; x++) {				
+		for (int y = 100; y <= endy; y++){			
+			for (int x = 5; x <= endx; x++) {				
 				pixels [3* (x+y*endx)]=50;
 				pixels [3* (x+y*endx)+1]=150;
 				pixels [3* (x+y*endx)+2]=200;		
 			}		
 		}	
 
+}
+
+void CatPictureApp::createLine(uint8_t* pixels, int x, int y) {
+	for (int i = 0; i <= x-1; i++) {
+		pixels[3*i]=200;
+		pixels[3*i+1]=150;
+		pixels[3*i+2]=50;
+	}
 }
 
 void CatPictureApp::setup()
@@ -76,14 +85,15 @@ void CatPictureApp::update()
 		//brightness = 1.0f; }
 
 	//Get array of pixel info
-	uint8_t* dataArray = (*mySurface_).getData();
+	uint8_t* pixels = (*mySurface_).getData();
 
-	Color8u fill1 = Color8u(128,128,192);
-	Color8u border1 = Color8u(192,192,255);
-	Color8u fill2 = Color8u(192,192,192);
-	Color8u border2 = Color8u(255,255,255);
+	//Color8u fill1 = Color8u(128,128,192);
+	//Color8u border1 = Color8u(192,192,255);
+	//Color8u fill2 = Color8u(192,192,192);
+	//Color8u border2 = Color8u(255,255,255);
 
-	createRectangle(dataArray, 500, 550, 500, 550);
+	createRectangle(pixels, 800, 600, 200, 300);
+	createLine(pixels, 800, 600);
 }
 
 void CatPictureApp::draw()
