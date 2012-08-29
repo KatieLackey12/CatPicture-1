@@ -15,6 +15,7 @@ class CatPictureApp : public AppBasic {
 	void mouseDown( MouseEvent event );	
 	void update();
 	void draw();
+	void settings(Settings* mySettings);
 
 private:
 	//float brightness;
@@ -26,6 +27,11 @@ private:
 
 	void createRectangle(uint8_t* pixels, int x1, int y1, int x2, int y2);
 };
+
+void CatPictureApp::settings(Settings* mySettings) {
+	(*mySettings).setWindowSize(appWidth, appHeight);
+	(*mySettings).setResizable(false);
+}
 
 void CatPictureApp::createRectangle(uint8_t* pixels, int x1, int y1, int x2, int y2) {
 	//Find starting and ending coordinates of rectangle 
@@ -41,6 +47,15 @@ void CatPictureApp::createRectangle(uint8_t* pixels, int x1, int y1, int x2, int
 	if (starty >= appHeight) return;
 	if (endx >= appWidth) endx = appWidth-1;
 	if (endy >= appHeight) endy = appHeight-1;
+	
+		for ( int y=50; y <= endy; y++){			
+			for ( int x = 0; x <= endx; x++) {				
+				pixels [3* (x+y*endx)]=50;
+				pixels [3* (x+y*endx)+1]=150;
+				pixels [3* (x+y*endx)+2]=200;		
+			}		
+		}	
+
 }
 
 void CatPictureApp::setup()
@@ -68,13 +83,13 @@ void CatPictureApp::update()
 	Color8u fill2 = Color8u(192,192,192);
 	Color8u border2 = Color8u(255,255,255);
 
-	createRectangle(dataArray, 800, 600, 800, 600);
+	createRectangle(dataArray, 500, 550, 500, 550);
 }
 
 void CatPictureApp::draw()
 {
-	//clear out the window with yellow
-	gl::clear( Color( 1.0f, 2.0f, 0.0f ) ); 
+	//clear out the window with mint green
+	gl::clear( Color( 0.7f, 1.0f, 0.7f ) ); 
 
 	//draw the surface
 	gl::draw(*mySurface_);
