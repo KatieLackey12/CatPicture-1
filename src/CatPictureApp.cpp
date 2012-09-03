@@ -23,10 +23,11 @@ private:
 
 	static const int appWidth = 800;
 	static const int appHeight = 600;
-	static const int textureSize = 1024;
+	static const int surfaceSize = 1024;
 
 	void createRectangle(uint8_t* pixels, int x1, int y1, int x2, int y2);
 	void createLine(uint8_t* pixels, int x, int y);
+	void createCircle(uint8_t* pixels, int x, int y, int r);
 };
 
 void CatPictureApp::settings(Settings* mySettings) {
@@ -49,16 +50,16 @@ void CatPictureApp::createRectangle(uint8_t* pixels, int x1, int y1, int x2, int
 	if (endx >= appWidth) endx = appWidth-1;
 	if (endy >= appHeight) endy = appHeight-1;
 	
-		for (int y = 100; y <= endy; y++){			
-			for (int x = 5; x <= endx; x++) {				
-				pixels [3* (x+y*endx)]=50;
-				pixels [3* (x+y*endx)+1]=150;
-				pixels [3* (x+y*endx)+2]=200;		
+		for (int y = 10; y <= endy; y++){			
+			for (int x = 20; x <= endx; x++) {				
+				pixels [3* (x+y*surfaceSize)]=50;
+				pixels [3* (x+y*surfaceSize)+1]=150;
+				pixels [3* (x+y*surfaceSize)+2]=200;		
 			}		
 		}	
 
 }
-
+/*
 void CatPictureApp::createLine(uint8_t* pixels, int x, int y) {
 	for (int i = 0; i <= x-1; i++) {
 		pixels[3*i]=200;
@@ -66,11 +67,33 @@ void CatPictureApp::createLine(uint8_t* pixels, int x, int y) {
 		pixels[3*i+2]=50;
 	}
 }
+*/
+
+void CatPictureApp::createCircle(uint8_t* pixels, int x, int y, int r) {
+
+	if (r <= 0) return;
+
+	for(int newY = y-r; newY <= y+r; newY++) {
+		for (int newX=x-r; newX <= x+r; newX++) {
+			//Check bounds
+			if (newY < 0 || newX < 0 || newY >= appHeight || newX >= appWidth) continue;
+
+			int newR = (int)sqrt((double)((newX-x)*(newX-x) + (newY-y)*(newY-y)));
+
+			if(newR <= r) {
+				int offset = 3*(newX+newY*surfaceSize);
+				pixels [offset] = 175;
+				pixels [offset+1] = 150;
+				pixels [offset+2] = 50;
+			}
+		}
+	}
+}
 
 void CatPictureApp::setup()
 {
 	//brightness = 1.0f;
-	mySurface_ = new Surface(textureSize, textureSize, false);
+	mySurface_ = new Surface(surfaceSize, surfaceSize, false);
 
 }
 
@@ -92,8 +115,9 @@ void CatPictureApp::update()
 	//Color8u fill2 = Color8u(192,192,192);
 	//Color8u border2 = Color8u(255,255,255);
 
-	createRectangle(pixels, 800, 600, 200, 300);
-	createLine(pixels, 800, 600);
+	createRectangle(pixels, 300, 100, 50, 100);
+	//createLine(pixels, 800, 600);
+	createCircle(pixels, 300, 350, 100);
 }
 
 void CatPictureApp::draw()
