@@ -58,7 +58,7 @@ private:
 	*
 	*@param
 	*/
-	void createLine(uint8_t* pixels, int x1, int y1, int x2, int y2);
+	void createLine(uint8_t* pixels, int segLength, int x1, int x2);
 	
 	/**
 	*Draws a filled circle, 
@@ -108,27 +108,19 @@ void CatPictureApp::createRectangle(uint8_t* pixels, int x1, int y1, int x2, int
 
 }
 
-void CatPictureApp::createLine(uint8_t* pixels, int x1, int y1, int x2, int y2) {
+void CatPictureApp::createLine(uint8_t* pixels, int segLength, int x1, int x2) {
 	
-	int offset;
-	float dify, difx, slope, count;
+	int x = x1;
+	int y = x2;
 
-	//Use formula for the slope of a line segment:
-	dify = y2-y1;
-	difx = x2-x1;
-	slope = dify/difx;
-	count = y1;
+		for (int i = 0; i <= segLength; i++) {
+			pixels[3*(x+y*surfaceSize)] = 255;
+			pixels[3*(x+y*surfaceSize)+1] = 0;
+			pixels[3*(x+y*surfaceSize)+2] = 0;
 
-	for (int i = x1; i <= x2; i++) {
-		
-		offset = 3*(i+slope*surfaceSize);
-
-		pixels[offset]=50;
-		pixels[offset+1]=150;
-		pixels[offset+2]=50;
-		
-		count += slope;
-	}
+			x += 1;
+			y += 1;
+		}
 }
 
 void CatPictureApp::createCircle(uint8_t* pixels, int x, int y, int r) {
@@ -168,6 +160,7 @@ void CatPictureApp::createTriangle(uint8_t* pixels, int legLength, int pt1, int 
 			y += 1;
 		}
 
+		
 		for (int i = 0; i <= legLength*2; i++) {
 			pixels[3*(x+y*surfaceSize)] = 0;
 			pixels[3*(x+y*surfaceSize)+1] = 100;
@@ -208,9 +201,9 @@ void CatPictureApp::update()
 	uint8_t* pixels = (*mySurface_).getData();
 
 	createRectangle(pixels, 200, 300, 0, 0);
-	//createLine(pixels, 100, 400, 200, 0);
 	createCircle(pixels, 300, 350, 100);
 	createTriangle(pixels, 100, 400, 200, 0);
+	createLine(pixels, 200, 225, 225);
 }
 
 void CatPictureApp::draw()
