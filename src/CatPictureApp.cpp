@@ -9,7 +9,7 @@
 *Fall 2012 semester.
 *
 *This project satisfys the following requirements for HW1:
-*	A.1 (rectangle), A.2 (circle), A.
+*	A.1 (rectangle), A.2 (circle), A.3 (line), A.7 (triangle)
 *	B.
 *	E. 
 */
@@ -43,36 +43,53 @@ private:
 
 	/**
 	*Draws a filled rectangle to the screen, its location is determined
-	*by y and x in the for loop and its size by the parameters.
+	*by y and x in the for loop and its size is determined by the parameters.
 	*
 	*@param pixels An array of pixels
-	*@param x1 Determines the width of the rectangle
-	*@param y1 Determines the height of the rectangle
-	*@param x2 
-	*@param y2 
+	*@param x1 The x-coordinate of the position of the rectangle center
+	*@param y1 The y-coordinate of the position of the rectangle center
+	*@param x2 Determines the width of the rectangle
+	*@param y2 Determines the height of the rectangle
+	*
+	*Satisfys requirement A.1
 	*/
 	void createRectangle(uint8_t* pixels, int x1, int y1, int x2, int y2);
 	
 	/**
-	*Draws a line segment, 
+	*Draws a line segment.
 	*
-	*@param
+	*@param pixels An array of pixels
+	*@param segLength Determines the length of the segment
+	*@param pt1 The x-coordinate for the starting position
+	*@param pt2 The y-coordinate for the starting position
+	*
+	*Satisfys requirement A.3
 	*/
-	void createLine(uint8_t* pixels, int segLength, int x1, int x2);
+	void createLine(uint8_t* pixels, int segLength, int pt1, int pt2);
 	
 	/**
 	*Draws a filled circle, 
 	*
-	*@param 
+	*@param pixels An array of pixels
+	*@param x The x-coordinate of the position of the circle center
+	*@param y The y-coordinate of the position of the circle center
+	*@param r The size of the radius
+	*
+	*Satisfys requirement A.2
 	*/
 	void createCircle(uint8_t* pixels, int x, int y, int r);
 
 	/**
-	*Draws a triangle...
+	*Draws an empty triangle made up of 3 line segments. 
 	*
-	*@param
+	*@param pixels An array of pixels
+	*@param legLength Determines how long the legs of the triangle will be
+	*@param pt1 The x-coordinate for the starting position
+	*@param pt2 The y-coordinate for the starting position
+	*
+	*Satisfys requirement A.7
 	*/
-	void createTriangle(uint8_t* pixels, int legLength, int pt1, int pt2, int pt3);
+	void createTriangle(uint8_t* pixels, int legLength, int pt1, int pt2);
 };
 
 void CatPictureApp::settings(Settings* mySettings) {
@@ -108,10 +125,10 @@ void CatPictureApp::createRectangle(uint8_t* pixels, int x1, int y1, int x2, int
 
 }
 
-void CatPictureApp::createLine(uint8_t* pixels, int segLength, int x1, int x2) {
+void CatPictureApp::createLine(uint8_t* pixels, int segLength, int pt1, int pt2) {
 	
-	int x = x1;
-	int y = x2;
+	int x = pt1;
+	int y = pt2;
 
 		for (int i = 0; i <= segLength; i++) {
 			pixels[3*(x+y*surfaceSize)] = 255;
@@ -144,7 +161,7 @@ void CatPictureApp::createCircle(uint8_t* pixels, int x, int y, int r) {
 	}
 }
 
-void CatPictureApp::createTriangle(uint8_t* pixels, int legLength, int pt1, int pt2, int pt3) {
+void CatPictureApp::createTriangle(uint8_t* pixels, int legLength, int pt1, int pt2) {
 
 	if ((pt1 <= appWidth) && ((pt1 + legLength) <= appWidth)) {
 
@@ -202,7 +219,7 @@ void CatPictureApp::update()
 
 	createRectangle(pixels, 200, 300, 0, 0);
 	createCircle(pixels, 300, 350, 100);
-	createTriangle(pixels, 100, 400, 200, 0);
+	createTriangle(pixels, 100, 400, 200);
 	createLine(pixels, 200, 225, 225);
 }
 
