@@ -11,6 +11,9 @@
 *This project satisfys the following requirements for HW1:
 *	A.1 (rectangle), A.2 (circle), A.3 (line), A.7 (triangle)
 *	B.
+*	C The picture my program draws is a little red house and a sun
+*		with a singular ray shining from it just for kicks :)
+*	D 
 *	E. 
 */
 
@@ -46,10 +49,10 @@ private:
 	*by y and x in the for loop and its size is determined by the parameters.
 	*
 	*@param pixels An array of pixels
-	*@param x1 The x-coordinate of the position of the rectangle center
-	*@param y1 The y-coordinate of the position of the rectangle center
-	*@param x2 Determines the width of the rectangle
-	*@param y2 Determines the height of the rectangle
+	*@param x1 Determines the width of the rectangle
+	*@param y1 Determines the height of the rectangle
+	*@param x2 The x-coordinate for the bounds of the rectangle
+	*@param y2 The y-coordinate for the bounds of the rectangle
 	*
 	*Satisfys requirement A.1
 	*/
@@ -114,12 +117,12 @@ void CatPictureApp::createRectangle(uint8_t* pixels, int x1, int y1, int x2, int
 	
 	int offset;
 
-		for (int y = 30; y <= endy; y++){			
+		for (int y = 75; y <= endy; y++){			
 			for (int x = 50; x <= endx; x++) {
 				offset = 3*(x+y*surfaceSize);
-				pixels[offset] = 50;
-				pixels[offset+1] = 150;
-				pixels[offset+2] = 200;		
+				pixels[offset] = 178;
+				pixels[offset+1] = 34;
+				pixels[offset+2] = 34;		
 			}		
 		}	
 
@@ -132,7 +135,7 @@ void CatPictureApp::createLine(uint8_t* pixels, int segLength, int pt1, int pt2)
 
 		for (int i = 0; i <= segLength; i++) {
 			pixels[3*(x+y*surfaceSize)] = 255;
-			pixels[3*(x+y*surfaceSize)+1] = 0;
+			pixels[3*(x+y*surfaceSize)+1] = 245;
 			pixels[3*(x+y*surfaceSize)+2] = 0;
 
 			x += 1;
@@ -153,9 +156,9 @@ void CatPictureApp::createCircle(uint8_t* pixels, int x, int y, int r) {
 
 			if(newR <= r) {
 				int offset = 3*(newX+newY*surfaceSize);
-				pixels [offset] = 100;
-				pixels [offset+1] = 10;
-				pixels [offset+2] = 100;
+				pixels [offset] = 255;
+				pixels [offset+1] = 245;
+				pixels [offset+2] = 0;
 			}
 		}
 	}
@@ -169,9 +172,9 @@ void CatPictureApp::createTriangle(uint8_t* pixels, int legLength, int pt1, int 
 		int y = pt2;
 
 		for (int i = 0; i <= legLength; i++) {
-			pixels[3*(x+y*surfaceSize)] = 0;
-			pixels[3*(x+y*surfaceSize)+1] = 100;
-			pixels[3*(x+y*surfaceSize)+2] = 100;
+			pixels[3*(x+y*surfaceSize)] = 139;
+			pixels[3*(x+y*surfaceSize)+1] = 69;
+			pixels[3*(x+y*surfaceSize)+2] = 19;
 
 			x += 1;
 			y += 1;
@@ -179,17 +182,17 @@ void CatPictureApp::createTriangle(uint8_t* pixels, int legLength, int pt1, int 
 
 		
 		for (int i = 0; i <= legLength*2; i++) {
-			pixels[3*(x+y*surfaceSize)] = 0;
-			pixels[3*(x+y*surfaceSize)+1] = 100;
-			pixels[3*(x+y*surfaceSize)+2] = 100;
+			pixels[3*(x+y*surfaceSize)] = 139;
+			pixels[3*(x+y*surfaceSize)+1] = 69;
+			pixels[3*(x+y*surfaceSize)+2] = 19;
 
 			x -= 1;
 		}
 
 		for (int i = 0; i <= legLength; i++) {
-			pixels[3*(x+y*surfaceSize)] = 0;
-			pixels[3*(x+y*surfaceSize)+1] = 100;
-			pixels[3*(x+y*surfaceSize)+2] = 100;
+			pixels[3*(x+y*surfaceSize)] = 139;
+			pixels[3*(x+y*surfaceSize)+1] = 69;
+			pixels[3*(x+y*surfaceSize)+2] = 19;
 
 			x += 1;
 			y -= 1;
@@ -217,10 +220,10 @@ void CatPictureApp::update()
 	//Get array of pixel info
 	uint8_t* pixels = (*mySurface_).getData();
 
-	createRectangle(pixels, 200, 300, 0, 0);
-	createCircle(pixels, 300, 350, 100);
-	createTriangle(pixels, 100, 400, 200);
-	createLine(pixels, 200, 225, 225);
+	createRectangle(pixels, 50, 100, 150, 175);
+	createCircle(pixels, 200, 25, 30);
+	createTriangle(pixels, 50, 100, 25);
+	createLine(pixels, 50, 200, 25);
 }
 
 void CatPictureApp::draw()
