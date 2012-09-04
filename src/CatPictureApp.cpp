@@ -93,6 +93,11 @@ private:
 	*Satisfys requirement A.7
 	*/
 	void createTriangle(uint8_t* pixels, int legLength, int pt1, int pt2);
+
+	/**
+	*
+	*/
+	void blurSurface(uint8_t* blurPattern);
 };
 
 void CatPictureApp::settings(Settings* mySettings) {
@@ -198,6 +203,27 @@ void CatPictureApp::createTriangle(uint8_t* pixels, int legLength, int pt1, int 
 			y -= 1;
 		}
 	}
+}
+
+void CatPictureApp::blurSurface(uint8_t* blurPattern) {
+
+	float* kernal[9] = 
+	{1/9.0, 1/9.0, 1/9.0, 
+	1/9.0, 1/9.0, 1/9.0, 
+	1/9.0, 1/9.0, 1/9.0}
+
+	for (int y1 = 0; y1 < appHeight; y1++) {
+		for (int x1 = 0; x1 < appWidth; x1++) {
+			for (int y2 = 0; y2 < y1; y2++) {
+				for (int x2 = 0; x2 < x1; x2++) {
+					//calculate offset for y2 and x2
+				}
+			}
+			//store in offset for x1 and y1
+
+		}
+	}
+
 }
 
 void CatPictureApp::setup()
