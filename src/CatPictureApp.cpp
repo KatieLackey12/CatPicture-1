@@ -13,7 +13,7 @@
 *	B.
 *	C The picture my program draws is a little red house and a sun
 *		with a singular ray shining from it just for kicks :)
-*	D 
+*	D Image saves to a file "yoderal2.png"
 *	E. 
 */
 
@@ -97,7 +97,7 @@ private:
 	/**
 	*
 	*/
-	void blurSurface(uint8_t* blurPattern);
+	void blurSurface(uint8_t* pixels);
 };
 
 void CatPictureApp::settings(Settings* mySettings) {
@@ -205,25 +205,34 @@ void CatPictureApp::createTriangle(uint8_t* pixels, int legLength, int pt1, int 
 	}
 }
 
-void CatPictureApp::blurSurface(uint8_t* blurPattern) {
+void CatPictureApp::blurSurface(uint8_t* pixels) {
 
-	float* kernal[9] = 
-	{1/9.0, 1/9.0, 1/9.0, 
-	1/9.0, 1/9.0, 1/9.0, 
-	1/9.0, 1/9.0, 1/9.0}
+	int offset;
+	float z = 1.0/9.0;
+	float kernal[9] = 
+	{z, z, z,
+	z, z, z, 
+	z, z, z};
 
-	for (int y1 = 0; y1 < appHeight; y1++) {
-		for (int x1 = 0; x1 < appWidth; x1++) {
-			for (int y2 = 0; y2 < y1; y2++) {
-				for (int x2 = 0; x2 < x1; x2++) {
+	for (int y1 = 1; y1 < appHeight+1; y1++) {
+		for (int x1 = 1; x1 < appWidth+1; x1++) {
+			for (int y2 = 1; y2 < y1+1; y2++) {
+				for (int x2 = 1; x2 < x1+1; x2++) {
 					//calculate offset for y2 and x2
+					//offset = 3*(x2+y2*surfaceSize);
+					//pixels [offset] = 255;
+					//pixels [offset + 1] = 0;
+					//pixels [offset + 2] = 0;
 				}
 			}
 			//store in offset for x1 and y1
-
+			//offset = 3*(x1+y1*surfaceSize);
+			//pixels [offset] = 255;
+			//pixels [offset + 1] = 0;
+			//pixels [offset + 2] = 0;
 		}
 	}
-
+	
 }
 
 void CatPictureApp::setup()
@@ -250,6 +259,8 @@ void CatPictureApp::update()
 	createCircle(pixels, 200, 25, 30);
 	createTriangle(pixels, 50, 100, 25);
 	createLine(pixels, 50, 200, 25);
+
+	writeImage("yoderal2.png", *mySurface_);
 }
 
 void CatPictureApp::draw()
