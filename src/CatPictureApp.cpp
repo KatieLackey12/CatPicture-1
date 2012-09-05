@@ -10,11 +10,11 @@
 *
 *This project satisfys the following requirements for HW1:
 *	A.1 (rectangle), A.2 (circle), A.3 (line), A.7 (triangle)
-*	B.
+*	B.1 (blur)
 *	C The picture my program draws is a little red house and a sun
 *		with a singular ray shining from it just for kicks :)
 *	D Image saves to a file "yoderal2.png"
-*	E. 
+*	E. , E.6 (yellow circles appear where mouse is clicked)
 */
 
 #include "cinder/app/AppBasic.h"
@@ -95,7 +95,11 @@ private:
 	void createTriangle(uint8_t* pixels, int legLength, int pt1, int pt2);
 
 	/**
+	*Blurs the entire surface. Gets more and more blurry the longer the window is open
 	*
+	*@param pixels An array of pixels
+	*
+	*Satisfys the requirement B.1
 	*/
 	void blurSurface(uint8_t* pixels);
 };
@@ -122,15 +126,14 @@ void CatPictureApp::createRectangle(uint8_t* pixels, int x1, int y1, int x2, int
 	
 	int offset;
 
-		for (int y = 75; y <= endy; y++){			
-			for (int x = 50; x <= endx; x++) {
-				offset = 3*(x+y*surfaceSize);
-				pixels[offset] = 178;
-				pixels[offset+1] = 34;
-				pixels[offset+2] = 34;		
-			}		
-		}	
-
+	for (int y = 75; y <= endy; y++){
+		for (int x = 50; x <= endx; x++) {
+			offset = 3*(x+y*surfaceSize);
+			pixels[offset] = 178;
+			pixels[offset+1] = 34;
+			pixels[offset+2] = 34;
+		}		
+	}	
 }
 
 void CatPictureApp::createLine(uint8_t* pixels, int segLength, int pt1, int pt2) {
@@ -184,7 +187,6 @@ void CatPictureApp::createTriangle(uint8_t* pixels, int legLength, int pt1, int 
 			x += 1;
 			y += 1;
 		}
-
 		
 		for (int i = 0; i <= legLength*2; i++) {
 			pixels[3*(x+y*surfaceSize)] = 139;
@@ -219,19 +221,19 @@ void CatPictureApp::blurSurface(uint8_t* pixels) {
 				for (int x2 = x1-1; x2 <= x1+1; x2++) {
 					//calculate offset for y2 and x2
 					offset = 3*(y2+x2*surfaceSize);
+					//add offset to holding variables
 					totalR += pixels [offset];
 					totalG += pixels [offset + 1];
 					totalB += pixels [offset + 2];
 				}
 			}
-			//store in offset for x1 and y1
+			//store in offset for x1 and y1 but divide by 9.0
 			offset = 3*(y1+x1*surfaceSize);
 			pixels [offset] = totalR/z;
 			pixels [offset + 1] = totalG/z;
 			pixels [offset + 2] = totalB/z;
 		}
 	}
-	
 }
 
 void CatPictureApp::setup()
@@ -241,12 +243,18 @@ void CatPictureApp::setup()
 
 }
 
-void CatPictureApp::mouseDown( MouseEvent event )
-{
+void CatPictureApp::mouseDown( MouseEvent event ) {
+
+	uint8_t* data = (*mySurface_).getData();
+
+	int x = event.getX();
+	int y = event.getY();
+	createCircle(data, x, y, 50);
+
 }
 
-void CatPictureApp::update()
-{
+void CatPictureApp::update() {
+
 	//brightness = brightness - 0.01f;
 	//if(brightness < 0.0f){
 		//brightness = 1.0f; }
