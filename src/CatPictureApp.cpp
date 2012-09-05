@@ -208,28 +208,27 @@ void CatPictureApp::createTriangle(uint8_t* pixels, int legLength, int pt1, int 
 void CatPictureApp::blurSurface(uint8_t* pixels) {
 
 	int offset;
-	float z = 1.0/9.0;
-	float kernal[9] = 
-	{z, z, z,
-	z, z, z, 
-	z, z, z};
+	float z = 9.0;
 
 	for (int y1 = 1; y1 < appHeight+1; y1++) {
 		for (int x1 = 1; x1 < appWidth+1; x1++) {
-			for (int y2 = 1; y2 < y1+1; y2++) {
-				for (int x2 = 1; x2 < x1+1; x2++) {
+			int totalR = 0;
+			int totalG = 0;
+			int totalB = 0;
+			for (int y2 = y1-1; y2 <= y1+1; y2++) {
+				for (int x2 = x1-1; x2 <= x1+1; x2++) {
 					//calculate offset for y2 and x2
-					//offset = 3*(x2+y2*surfaceSize);
-					//pixels [offset] = 255;
-					//pixels [offset + 1] = 0;
-					//pixels [offset + 2] = 0;
+					offset = 3*(y2+x2*surfaceSize);
+					totalR += pixels [offset];
+					totalG += pixels [offset + 1];
+					totalB += pixels [offset + 2];
 				}
 			}
 			//store in offset for x1 and y1
-			//offset = 3*(x1+y1*surfaceSize);
-			//pixels [offset] = 255;
-			//pixels [offset + 1] = 0;
-			//pixels [offset + 2] = 0;
+			offset = 3*(y1+x1*surfaceSize);
+			pixels [offset] = totalR/z;
+			pixels [offset + 1] = totalG/z;
+			pixels [offset + 2] = totalB/z;
 		}
 	}
 	
@@ -259,6 +258,7 @@ void CatPictureApp::update()
 	createCircle(pixels, 200, 25, 30);
 	createTriangle(pixels, 50, 100, 25);
 	createLine(pixels, 50, 200, 25);
+	blurSurface(pixels);
 
 	writeImage("yoderal2.png", *mySurface_);
 }
