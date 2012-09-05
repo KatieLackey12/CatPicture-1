@@ -247,6 +247,7 @@ void CatPictureApp::setup()
 }
 
 void CatPictureApp::mouseDown( MouseEvent event ) {
+	//Satisfys requirement E.6 (mouse event)
 
 	uint8_t* data = (*mySurface_).getData();
 
@@ -267,11 +268,17 @@ void CatPictureApp::update() {
 	}
 
 	//Every 2 frames draw a randomly placed, short, blue line to the screen (rain)
+	//Satisfys requirement E.5 (annimation)
 	if (frameNumber%2 == 0) {
 		int randL = Rand::randInt(10, 20);
 		int randpt1 = Rand::randInt(1, 500);
 		int randpt2 = Rand::randInt(1, 700);
 		createLine(pixels, randL, randpt1, randpt2);
+	}
+
+	//blur only occurs for the first 15 frames (otherwise it looks messy)
+	if (frameNumber > 0 && frameNumber < 15) {
+		blurSurface(pixels);
 	}
 
 	frameNumber++;
@@ -280,9 +287,6 @@ void CatPictureApp::update() {
 	createCircle(pixels, 200, 25, 30);
 	createTriangle(pixels, 50, 100, 25);
 	createLine(pixels, 20, 200, 100);
-	blurSurface(pixels);
-
-	
 }
 
 void CatPictureApp::draw()
