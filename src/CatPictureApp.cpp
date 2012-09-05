@@ -14,7 +14,8 @@
 *	C The picture my program draws is a little red house and a sun
 *		with a singular ray shining from it just for kicks :)
 *	D Image saves to a file "yoderal2.png"
-*	E. , E.6 (yellow circles appear where mouse is clicked)
+*	E.5 (annimation: small blue line segments appear every 2 frames to mimick rain),
+*		E.6 (mouse event: yellow circles of random size appear where mouse is clicked)
 */
 
 #include "cinder/app/AppBasic.h"
@@ -23,6 +24,7 @@
 #include "cinder/ImageIo.h"
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "Resources.h"
+#include "cinder/Rand.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -37,12 +39,13 @@ class CatPictureApp : public AppBasic {
 	void settings(Settings* mySettings);
 
 private:
-	//float brightness;
 	Surface* mySurface_; //create a surface to display and modify
 
 	static const int appWidth = 800;
 	static const int appHeight = 600;
 	static const int surfaceSize = 1024;
+
+	int frameNumber;
 
 	/**
 	*Draws a filled rectangle to the screen, its location is determined
@@ -142,9 +145,9 @@ void CatPictureApp::createLine(uint8_t* pixels, int segLength, int pt1, int pt2)
 	int y = pt2;
 
 		for (int i = 0; i <= segLength; i++) {
-			pixels[3*(x+y*surfaceSize)] = 255;
-			pixels[3*(x+y*surfaceSize)+1] = 245;
-			pixels[3*(x+y*surfaceSize)+2] = 0;
+			pixels[3*(x+y*surfaceSize)] = 0;
+			pixels[3*(x+y*surfaceSize)+1] = 0;
+			pixels[3*(x+y*surfaceSize)+2] = 205;
 
 			x += 1;
 			y += 1;
@@ -238,7 +241,7 @@ void CatPictureApp::blurSurface(uint8_t* pixels) {
 
 void CatPictureApp::setup()
 {
-	//brightness = 1.0f;
+	frameNumber = 0;
 	mySurface_ = new Surface(surfaceSize, surfaceSize, false);
 
 }
@@ -247,28 +250,39 @@ void CatPictureApp::mouseDown( MouseEvent event ) {
 
 	uint8_t* data = (*mySurface_).getData();
 
+	int randR = Rand::randInt(0, 300);
 	int x = event.getX();
 	int y = event.getY();
-	createCircle(data, x, y, 50);
+	createCircle(data, x, y, randR);
 
 }
 
 void CatPictureApp::update() {
-
-	//brightness = brightness - 0.01f;
-	//if(brightness < 0.0f){
-		//brightness = 1.0f; }
-
 	//Get array of pixel info
 	uint8_t* pixels = (*mySurface_).getData();
+
+	//Save the image after some blurring and "raining" has occured
+	if (frameNumber == 15) {
+		writeImage("yoderal2.png", *mySurface_);
+	}
+
+	//Every 2 frames draw a randomly placed, short, blue line to the screen (rain)
+	if (frameNumber%2 == 0) {
+		int randL = Rand::randInt(10, 20);
+		int randpt1 = Rand::randInt(1, 500);
+		int randpt2 = Rand::randInt(1, 700);
+		createLine(pixels, randL, randpt1, randpt2);
+	}
+
+	frameNumber++;
 
 	createRectangle(pixels, 50, 100, 150, 175);
 	createCircle(pixels, 200, 25, 30);
 	createTriangle(pixels, 50, 100, 25);
-	createLine(pixels, 50, 200, 25);
+	createLine(pixels, 20, 200, 100);
 	blurSurface(pixels);
 
-	writeImage("yoderal2.png", *mySurface_);
+	
 }
 
 void CatPictureApp::draw()
