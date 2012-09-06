@@ -16,6 +16,10 @@
 *	D Image saves to a file "yoderal2.png"
 *	E.5 (annimation: small blue line segments appear every 2 frames to mimick rain),
 *		E.6 (mouse event: yellow circles of random size appear where mouse is clicked)
+KL- are comments made my Katie Lackey(peer review)
+KL- you had really good comments throughout your project.
+    It made it really easy to follow and understand what each method does.
+	Good use of variable names as well. It makes the code easy to understand.
 */
 
 #include "cinder/app/AppBasic.h"
@@ -128,7 +132,6 @@ void CatPictureApp::createRectangle(uint8_t* pixels, int x1, int y1, int x2, int
 	if (endy >= appHeight) endy = appHeight-1;
 	
 	int offset;
-
 	for (int y = 75; y <= endy; y++){
 		for (int x = 50; x <= endx; x++) {
 			offset = 3*(x+y*surfaceSize);
@@ -259,6 +262,7 @@ void CatPictureApp::mouseDown( MouseEvent event ) {
 }
 
 void CatPictureApp::update() {
+
 	//Get array of pixel info
 	uint8_t* pixels = (*mySurface_).getData();
 
@@ -284,7 +288,8 @@ void CatPictureApp::update() {
 	frameNumber++;
 
 	createRectangle(pixels, 50, 100, 150, 175);
-	createCircle(pixels, 200, 25, 30);
+	//KL- lowered the y-coordinate so that the cirlce wasn't cut off 
+	createCircle(pixels, 200, 35, 30);
 	createTriangle(pixels, 50, 100, 25);
 	createLine(pixels, 20, 200, 100);
 }
@@ -296,6 +301,7 @@ void CatPictureApp::draw()
 
 	//draw the surface
 	gl::draw(*mySurface_);
+
 }
 
 CINDER_APP_BASIC( CatPictureApp, RendererGl )
