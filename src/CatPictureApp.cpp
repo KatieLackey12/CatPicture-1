@@ -20,6 +20,7 @@ KL- are comments made my Katie Lackey(peer review)
 KL- you had really good comments throughout your project.
     It made it really easy to follow and understand what each method does.
 	Good use of variable names as well. It makes the code easy to understand.
+	There is not much code to change. I think she did a really good job on this project.
 */
 
 #include "cinder/app/AppBasic.h"
@@ -123,6 +124,7 @@ void CatPictureApp::createRectangle(uint8_t* pixels, int x1, int y1, int x2, int
 	int starty = (y1 < y2) ? y1 : y2;
 	int endy = (y1 > y2) ? y1 : y2;
 
+	int color=.1;
 	//Bounds checking
 	if (endx < 0) return;
 	if (endy < 0) return;
@@ -132,14 +134,25 @@ void CatPictureApp::createRectangle(uint8_t* pixels, int x1, int y1, int x2, int
 	if (endy >= appHeight) endy = appHeight-1;
 	
 	int offset;
+	//KL-your code was prefectly fine here, but I was just 
+	//messing around with your code and trying to get the house to 
+	//change colors. Instead I got a cool gradiant look. I didn't want
+	//to change it back because I like the outcome. If you want to change it 
+	//back though the original ending you had was: 
+		//	pixels[offset] = 178;
+		//	pixels[offset+1] = 34;
+		//	pixels[offset+2] = 34;
 	for (int y = 75; y <= endy; y++){
 		for (int x = 50; x <= endx; x++) {
 			offset = 3*(x+y*surfaceSize);
-			pixels[offset] = 178;
-			pixels[offset+1] = 34;
-			pixels[offset+2] = 34;
+			pixels[offset] = color;
+			pixels[offset+1] = color;
+			pixels[offset+2] = color;
+			color++;
 		}		
-	}	
+	}
+	if(color>1)
+		color=0;
 }
 
 void CatPictureApp::createLine(uint8_t* pixels, int segLength, int pt1, int pt2) {
@@ -265,6 +278,7 @@ void CatPictureApp::update() {
 
 	//Get array of pixel info
 	uint8_t* pixels = (*mySurface_).getData();
+
 
 	//Save the image after some blurring and "raining" has occured
 	if (frameNumber == 15) {
